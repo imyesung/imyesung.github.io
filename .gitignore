@@ -1,0 +1,10 @@
+# macOS
+.DS_Store
+
+# Editor configs and project files (optional but common)
+.vscode/
+.idea/
+*.iml
+
+# System-specific trash
+Thumbs.db
