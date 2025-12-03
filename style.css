@@ -160,7 +160,14 @@ body {
 }
 
 .project-card {
-  margin-bottom: 2.5rem;
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.project-card:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
 }
 
 .project-body {
@@ -210,9 +217,13 @@ body {
 .video-embed {
   position: relative;
   width: 100%;
-  padding-top: 56.25%;
-  margin-bottom: 0.6rem;
+  max-width: 640px;
+  aspect-ratio: 16 / 9;
+  margin-bottom: 0.8rem;
   background-color: #000000;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .video-embed iframe {
@@ -221,6 +232,19 @@ body {
   width: 100%;
   height: 100%;
   border: 0;
+}
+
+/* Project card spacing */
+
+.project-card {
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.project-card:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
 }
 
 /* Footer */
@@ -247,4 +271,12 @@ body {
 /* Responsive */
 
 @media (max-width: 700px) {
+  .video-embed {
+    max-width: 100%;
+  }
+  
+  .project-card {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+  }
 }
