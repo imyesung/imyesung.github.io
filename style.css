@@ -1,4 +1,9 @@
-/* Basic layout */
+/* ── Design tokens ──────────────────────────────────────────
+   Type scale:  0.875rem · 1rem · 1.125rem
+   Space scale: 0.25 · 0.5 · 0.75 · 1 · 1.5 · 2 · 3 · 4 rem
+   ─────────────────────────────────────────────────────────── */
+
+/* ── Reset ── */
 
 *,
 *::before,
@@ -25,7 +30,7 @@ body {
     "Times New Roman",
     serif;
   line-height: 1.7;
-  font-size: 1.05rem;
+  font-size: 1rem;
 }
 
 .page-wrap {
@@ -34,7 +39,7 @@ body {
   flex-direction: column;
 }
 
-/* Shared max-width */
+/* ── Shared layout ── */
 
 .site-header-inner,
 .section-inner,
@@ -45,7 +50,21 @@ body {
   padding-right: 1.5rem;
 }
 
-/* Header and nav */
+/* ── Content links ── */
+
+.site-main a {
+  color: #0066cc;
+}
+
+.site-main a:visited {
+  color: #0066cc;
+}
+
+.site-main a:hover {
+  color: #003399;
+}
+
+/* ── Header ── */
 
 .site-header {
   border-bottom: 1px solid #d0d0d0;
@@ -53,7 +72,7 @@ body {
 }
 
 .site-header-inner {
-  padding-top: 1.5rem;
+  padding-top: 1rem;
   padding-bottom: 1rem;
   display: flex;
   align-items: baseline;
@@ -76,8 +95,8 @@ body {
 
 .site-nav {
   display: flex;
-  gap: 1.2rem;
-  font-size: 0.95rem;
+  gap: 1rem;
+  font-size: 1rem;
 }
 
 .site-nav a {
@@ -92,26 +111,26 @@ body {
 }
 
 .site-nav a:hover {
-  border-bottom-color: #999999;
+  border-bottom-color: #555555;
 }
 
-/* Sections and typography */
+/* ── Sections ── */
 
 .section {
   padding-top: 3rem;
   padding-bottom: 3rem;
 }
 
-/* About section */
+/* ── About ── */
 
 .section-about {
   padding-top: 3rem;
-  padding-bottom: 4rem;
+  padding-bottom: 3rem;
 }
 
 .section-about h1 {
   margin: 0 0 1.5rem 0;
-  font-size: 1.1rem;
+  font-size: 1.125rem;
   font-weight: 600;
   letter-spacing: 0.02em;
 }
@@ -123,13 +142,13 @@ body {
 }
 
 .about-contact {
-  margin-top: 2.5rem;
+  margin-top: 2rem;
   padding-top: 1.5rem;
   border-top: 1px solid #d0d0d0;
 }
 
 .about-contact h2 {
-  margin: 0 0 0.8rem 0;
+  margin: 0 0 0.75rem 0;
   font-size: 1rem;
   font-weight: 600;
   letter-spacing: 0.02em;
@@ -138,23 +157,16 @@ body {
 .about-contact .about-text {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
                "Liberation Mono", "Courier New", monospace;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   color: #333333;
 }
 
 .about-contact .about-text a {
-  color: #333333;
   text-decoration: none;
 }
 
 .about-contact .about-text a:hover {
   text-decoration: underline;
-}
-
-.github-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4em;
 }
 
 .github-icon {
@@ -163,7 +175,7 @@ body {
   fill: currentColor;
 }
 
-/* Filmography */
+/* ── Filmography ── */
 
 .section-filmography {
   padding-top: 3rem;
@@ -172,7 +184,7 @@ body {
 
 .section-filmography h1 {
   margin: 0 0 2rem 0;
-  font-size: 1.1rem;
+  font-size: 1.125rem;
   font-weight: 600;
   letter-spacing: 0.02em;
 }
@@ -183,7 +195,7 @@ body {
 
 .project-card {
   margin-bottom: 3rem;
-  padding-bottom: 2.5rem;
+  padding-bottom: 2rem;
   border-bottom: 1px solid #e5e5e5;
 }
 
@@ -198,28 +210,28 @@ body {
 }
 
 .project-meta {
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   color: #666666;
   letter-spacing: 0.02em;
   margin: 0.5rem 0;
 }
 
 .project-title {
-  margin: 0.3rem 0;
-  font-size: 1.1rem;
+  margin: 0.25rem 0;
+  font-size: 1.125rem;
   font-weight: 600;
 }
 
 .project-role {
-  margin: 0.3rem 0 0 0;
-  font-size: 0.95rem;
+  margin: 0.25rem 0 0 0;
+  font-size: 1rem;
   color: #333333;
 }
 
 .project-notes {
-  margin: 0.8rem 0 0 0;
-  padding-left: 1.2rem;
-  font-size: 0.9rem;
+  margin: 0.75rem 0 0 0;
+  padding-left: 1.5rem;
+  font-size: 0.875rem;
   color: #444444;
 }
 
@@ -228,7 +240,6 @@ body {
 }
 
 .project-notes a {
-  color: #003399;
   text-decoration: none;
 }
 
@@ -236,7 +247,29 @@ body {
   text-decoration: underline;
 }
 
-/* Video embeds */
+/* ── Project lists (Blackboard, Playground) ── */
+
+.project-list {
+  list-style: disc;
+  padding-left: 1.5rem;
+  margin: 0;
+}
+
+.project-list li {
+  padding: 0.25rem 0;
+}
+
+.project-link {
+  display: inline;
+}
+
+.project-link-meta {
+  font-size: 0.875rem;
+  color: #666666;
+  margin-left: 0.5rem;
+}
+
+/* ── Video embeds ── */
 
 .video-embed {
   position: relative;
@@ -257,22 +290,22 @@ body {
   border: 0;
 }
 
-/* Footer */
+/* ── Footer ── */
 
 .site-footer {
   margin-top: auto;
   border-top: 1px solid #d0d0d0;
-  padding-top: 1.2rem;
+  padding-top: 1rem;
   padding-bottom: 1.5rem;
 }
 
 .site-footer-inner {
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   color: #666666;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 0.4em;
+  gap: 0.5rem;
 }
 
 .footer-github {
@@ -286,22 +319,27 @@ body {
   color: #111111;
 }
 
-.github-icon {
-  width: 1em;
-  height: 1em;
-  fill: currentColor;
-}
-
-/* Responsive */
+/* ── Responsive ── */
 
 @media (max-width: 600px) {
   .site-header-inner,
   .section-inner,
   .site-footer-inner {
-    padding-left: 1.2rem;
-    padding-right: 1.2rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 
+  .site-header-inner {
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+  }
+
+  .site-nav {
+    gap: 0.75rem;
+    font-size: 0.875rem;
+  }
+
+  .section,
   .section-about,
   .section-filmography {
     padding-top: 2rem;
