@@ -251,82 +251,105 @@
               DOS (Disk Operating System) was the text-based OS that preceded Windows&mdash;you
               typed commands into a prompt to launch executables.
               A modern browser has no idea what to do with a DOS binary.
+              The black text scrolling on startup? That&rsquo;s a real DOS environment booting.
             </p>
 
             <p>
               The trick is <a href="https://js-dos.com">js-dos</a>, an open-source project
-              that compiles DOSBox&mdash;itself a full x86 CPU and DOS environment
-              emulator&mdash;into WebAssembly.
-              WebAssembly (Wasm) is a low-level binary format that runs inside
-              the browser at near-native speed.
-              So what you get is a virtual 1993 PC, booting virtual DOS,
-              running the original <code>DOOM.EXE</code>,
-              all inside a browser tab in 2026.
+              that compiles DOSBox&mdash;a full x86 CPU and DOS environment
+              emulator&mdash;into WebAssembly (Wasm), a low-level binary format
+              that runs inside the browser at near-native speed.
+              Here&rsquo;s what happens when you hit <em>Start</em>:
             </p>
 
             <div class="doom-diagram">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 310" fill="none">
-                <!-- CDN box -->
-                <rect x="1.5" y="1.5" width="130" height="50" rx="4" stroke="#1b2d45" stroke-width="2" fill="#e8edf2"/>
-                <text x="66" y="22" text-anchor="middle" font-family="'Iowan Old Style',Palatino,Georgia,serif" font-size="11" font-weight="600" fill="#1b2d45">CDN Server</text>
-                <text x="66" y="38" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="9" fill="#4a6a8a">DOOM-bundle.zip</text>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 420" fill="none">
+                <style>
+                  .d-serif { font-family: 'Iowan Old Style',Palatino,Georgia,serif; fill: #1b2d45; }
+                  .d-mono  { font-family: ui-monospace,SFMono-Regular,Menlo,monospace; fill: #4a6a8a; }
+                  .d-step  { font-family: ui-monospace,SFMono-Regular,Menlo,monospace; font-size: 10px; font-weight: 700; fill: #fff; }
+                  .d-label { font-family: 'Iowan Old Style',Palatino,Georgia,serif; font-size: 11.5px; font-weight: 600; fill: #1b2d45; }
+                  .d-desc  { font-family: 'Iowan Old Style',Palatino,Georgia,serif; font-size: 10px; fill: #4a6a8a; }
+                </style>
 
-                <!-- Arrow CDN to Browser -->
-                <line x1="132" y1="26" x2="175" y2="26" stroke="#1b2d45" stroke-width="1.5" stroke-dasharray="5,3"/>
-                <polygon points="175,22 183,26 175,30" fill="#1b2d45"/>
-                <text x="157" y="18" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="8" fill="#4a6a8a">HTTPS</text>
+                <!-- Step 1: Fetch -->
+                <circle cx="30" cy="36" r="14" fill="#1b2d45"/>
+                <text x="30" y="40" text-anchor="middle" class="d-step">1</text>
+                <text x="54" y="32" class="d-label">Fetch</text>
+                <text x="54" y="46" class="d-desc">Browser pulls ~2 MB over HTTPS from a CDN:</text>
 
-                <!-- Browser outer box -->
-                <rect x="185" y="1.5" width="333" height="305" rx="5" stroke="#1b2d45" stroke-width="2.5" fill="#fff"/>
-                <text x="351" y="22" text-anchor="middle" font-family="'Iowan Old Style',Palatino,Georgia,serif" font-size="12" font-weight="600" fill="#1b2d45">Browser Tab</text>
-                <line x1="185" y1="32" x2="518" y2="32" stroke="#1b2d45" stroke-width="1"/>
+                <rect x="54" y="56" width="410" height="46" rx="4" stroke="#1b2d45" stroke-width="1.5" fill="#e8edf2"/>
+                <text x="74" y="74" class="d-mono" font-size="9.5">js-dos-api.js</text>
+                <text x="190" y="74" class="d-desc">emulator engine (DOSBox &rarr; WebAssembly)</text>
+                <text x="74" y="90" class="d-mono" font-size="9.5">DOOM-bundle.zip</text>
+                <text x="210" y="90" class="d-desc">DOOM.EXE + DOOM1.WAD + dosbox.conf</text>
 
-                <!-- JS layer -->
-                <rect x="205" y="46" width="293" height="48" rx="4" stroke="#1b2d45" stroke-width="1.5" fill="#e8edf2"/>
-                <text x="351" y="66" text-anchor="middle" font-family="'Iowan Old Style',Palatino,Georgia,serif" font-size="11" font-weight="600" fill="#1b2d45">JavaScript &mdash; js-dos API</text>
-                <text x="351" y="82" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="9" fill="#4a6a8a">input capture, audio, canvas rendering</text>
+                <!-- Arrow -->
+                <line x1="30" y1="108" x2="30" y2="134" stroke="#1b2d45" stroke-width="1.5"/>
+                <polygon points="26,134 30,142 34,134" fill="#1b2d45"/>
 
-                <!-- Arrow JS to Wasm -->
-                <line x1="351" y1="94" x2="351" y2="110" stroke="#1b2d45" stroke-width="1.5"/>
-                <polygon points="347,110 351,118 355,110" fill="#1b2d45"/>
+                <!-- Step 2: Boot -->
+                <circle cx="30" cy="158" r="14" fill="#1b2d45"/>
+                <text x="30" y="162" text-anchor="middle" class="d-step">2</text>
+                <text x="54" y="154" class="d-label">Boot</text>
+                <text x="54" y="168" class="d-desc">DOSBox, compiled to WebAssembly, starts inside the browser.</text>
 
-                <!-- Wasm layer -->
-                <rect x="205" y="120" width="293" height="48" rx="4" stroke="#1b2d45" stroke-width="1.5" fill="#e8edf2"/>
-                <text x="351" y="140" text-anchor="middle" font-family="'Iowan Old Style',Palatino,Georgia,serif" font-size="11" font-weight="600" fill="#1b2d45">WebAssembly &mdash; DOSBox</text>
-                <text x="351" y="156" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="9" fill="#4a6a8a">x86 CPU emulation, memory, I/O</text>
+                <rect x="54" y="178" width="410" height="36" rx="4" stroke="#1b2d45" stroke-width="1.5" fill="#fff"/>
+                <text x="74" y="196" class="d-mono" font-size="9.5">DOSBox&mdash;Wasm</text>
+                <text x="186" y="196" class="d-desc">emulates x86 CPU, memory, VGA, Sound Blaster, keyboard</text>
+                <text x="74" y="208" class="d-desc" font-size="9" font-style="italic"></text>
 
-                <!-- Arrow Wasm to DOS -->
-                <line x1="351" y1="168" x2="351" y2="184" stroke="#1b2d45" stroke-width="1.5"/>
-                <polygon points="347,184 351,192 355,184" fill="#1b2d45"/>
+                <!-- Arrow -->
+                <line x1="30" y1="220" x2="30" y2="246" stroke="#1b2d45" stroke-width="1.5"/>
+                <polygon points="26,246 30,254 34,246" fill="#1b2d45"/>
 
-                <!-- Virtual DOS layer -->
-                <rect x="225" y="194" width="253" height="44" rx="4" stroke="#1b2d45" stroke-width="1.5" fill="#f6f8fa"/>
-                <text x="351" y="214" text-anchor="middle" font-family="'Iowan Old Style',Palatino,Georgia,serif" font-size="11" font-weight="600" fill="#1b2d45">Virtual DOS Environment</text>
-                <text x="351" y="229" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="9" fill="#4a6a8a">filesystem, interrupts, VGA</text>
+                <!-- Step 3: Mount -->
+                <circle cx="30" cy="270" r="14" fill="#1b2d45"/>
+                <text x="30" y="274" text-anchor="middle" class="d-step">3</text>
+                <text x="54" y="266" class="d-label">Mount</text>
+                <text x="54" y="280" class="d-desc">The bundle is extracted into a virtual DOS filesystem.</text>
 
-                <!-- Arrow DOS to DOOM -->
-                <line x1="351" y1="238" x2="351" y2="254" stroke="#1b2d45" stroke-width="1.5"/>
-                <polygon points="347,254 351,262 355,254" fill="#1b2d45"/>
+                <rect x="54" y="290" width="410" height="28" rx="4" stroke="#1b2d45" stroke-width="1.5" fill="#f6f8fa"/>
+                <text x="74" y="309" class="d-mono" font-size="10">C:\DOOM\</text>
+                <text x="150" y="309" class="d-mono" font-size="9.5">DOOM.EXE &nbsp; DOOM1.WAD &nbsp; dosbox.conf</text>
 
-                <!-- DOOM box -->
-                <rect x="285" y="264" width="132" height="32" rx="4" stroke="#1b2d45" stroke-width="2" fill="#1b2d45"/>
-                <text x="351" y="285" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="12" font-weight="700" fill="#fff">DOOM.EXE</text>
+                <!-- Arrow -->
+                <line x1="30" y1="324" x2="30" y2="350" stroke="#1b2d45" stroke-width="1.5"/>
+                <polygon points="26,350 30,358 34,350" fill="#1b2d45"/>
 
-                <!-- Side labels -->
-                <text x="195" y="74" text-anchor="end" font-family="'Iowan Old Style',Palatino,Georgia,serif" font-size="8" fill="#4a6a8a" transform="rotate(-90,195,74)">orchestration</text>
-                <text x="195" y="148" text-anchor="end" font-family="'Iowan Old Style',Palatino,Georgia,serif" font-size="8" fill="#4a6a8a" transform="rotate(-90,195,148)">emulation</text>
-                <text x="195" y="226" text-anchor="end" font-family="'Iowan Old Style',Palatino,Georgia,serif" font-size="8" fill="#4a6a8a" transform="rotate(-90,195,226)">execution</text>
+                <!-- Step 4: Execute -->
+                <circle cx="30" cy="374" r="14" fill="#1b2d45"/>
+                <text x="30" y="378" text-anchor="middle" class="d-step">4</text>
+                <text x="54" y="370" class="d-label">Execute</text>
+                <text x="54" y="384" class="d-desc">The original 1993 binary runs on the emulated x86 CPU.</text>
+
+                <rect x="54" y="394" width="172" height="24" rx="4" stroke="#1b2d45" stroke-width="2" fill="#1b2d45"/>
+                <text x="140" y="411" text-anchor="middle" class="d-mono" font-size="11" font-weight="700" style="fill:#fff">C:\DOOM> DOOM.EXE</text>
               </svg>
             </div>
 
             <p>
-              The game files live on a CDN (Content Delivery Network)&mdash;a
-              geographically distributed cluster of servers designed to serve
-              static assets from whichever node is closest to the user.
-              When you open this page, the browser pulls a ~2 MB bundle
-              from js-dos.com&rsquo;s CDN, js-dos mounts it into a virtual
-              filesystem, and boots <code>DOOM.EXE</code> from there.
-              Nothing is installed locally.
+              A CDN (Content Delivery Network) is a geographically distributed
+              cluster of servers that serves static files from whichever node
+              is closest to the user.
+              The ~2 MB DOOM bundle is hosted on js-dos.com&rsquo;s CDN.
+              Nothing is installed on your machine&mdash;everything lives
+              in the browser tab&rsquo;s memory and disappears when you close it.
+            </p>
+
+            <h2>Beyond DOS</h2>
+
+            <p>
+              This isn&rsquo;t limited to DOOM or even DOS. The general principle:
+              if an emulator exists for a platform, it can be compiled to
+              WebAssembly and run in a browser.
+              DOSBox handles DOS programs.
+              <a href="https://copy.sh/v86/">v86</a> emulates a full x86 PC
+              and can boot Windows 95, 98, or even Linux.
+              Console emulators for the NES, SNES, and Game Boy Advance have all
+              been ported to Wasm.
+              The constraint is performance&mdash;emulation has overhead&mdash;but
+              for anything from the pre-2000s era, a 2026 machine has cycles to spare.
             </p>
           </div>
         </div>
