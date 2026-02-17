@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+
+  <title>Asciimo &ndash; LIM YESUNG</title>
+  <meta name="description" content="A tiny ASCII creature that wanders, thinks, and reacts to your clicks." />
+
+  <link rel="canonical" href="https://imyesung.github.io/playground/asciimo/" />
+  <link rel="stylesheet" href="../../style.css" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    body {
+      background: #0a0a0c;
+      overflow: hidden;
+      height: 100vh;
+      cursor: crosshair;
+    }
+
+    /* --- dark header overrides --- */
+    .site-header {
+      background: transparent;
+      border-bottom-color: rgba(200, 180, 150, 0.12);
+      position: relative;
+      z-index: 10;
+    }
+
+    .logo-text { color: #e8dcc8 !important; }
+    .site-nav a { color: #666 !important; border-bottom-color: transparent !important; }
+    .site-nav a.nav-current { color: #e8dcc8 !important; border-bottom-color: #e8dcc8 !important; }
+    .site-nav a:hover { border-bottom-color: #666 !important; }
+
+    .page-wrap {
+      min-height: auto;
+    }
+
+    .site-main, .site-footer { display: none; }
+
+    /* --- grid --- */
+    canvas#grid {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      opacity: 0.06;
+      pointer-events: none;
+    }
+
+    /* --- character --- */
+    #character {
+      position: absolute;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 15px;
+      line-height: 1.15;
+      color: #e8dcc8;
+      white-space: pre;
+      pointer-events: none;
+      text-shadow: 0 0 8px rgba(232, 220, 200, 0.15);
+      filter: drop-shadow(2px 3px 4px rgba(0,0,0,0.6));
+    }
+
+    #trail {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+    }
+
+    .trail-dot {
+      position: absolute;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 15px;
+      line-height: 1.15;
+      white-space: pre;
+      color: #e8dcc8;
+      pointer-events: none;
+      animation: trailFade 1.8s ease-out forwards;
+    }
+
+    @keyframes trailFade {
+      0%   { opacity: 0.25; transform: scale(1); }
+      100% { opacity: 0; transform: scale(0.85); }
+    }
+
+    .thought-bubble {
+      position: absolute;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: #c4a882;
+      white-space: pre;
+      pointer-events: none;
+      animation: thoughtFloat 3s ease-out forwards;
+      opacity: 0;
+    }
+
+    @keyframes thoughtFloat {
+      0%   { opacity: 0; transform: translateY(0); }
+      15%  { opacity: 0.8; }
+      80%  { opacity: 0.6; }
+      100% { opacity: 0; transform: translateY(-60px); }
+    }
+
+    #status {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: #555;
+      letter-spacing: 0.05em;
+      z-index: 10;
+    }
+
+    #status span {
+      color: #c4a882;
+    }
+
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: #c4a882;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: particleFade 1s ease-out forwards;
+    }
+
+    @keyframes particleFade {
+      0%   { opacity: 0.7; transform: scale(1); }
+      100% { opacity: 0; transform: scale(0) translateY(-20px); }
+    }
+  </style>
+</head>
+<body class="page-playground">
+
+  <div class="page-wrap">
+    <header class="site-header">
+      <div class="site-header-inner">
+        <div class="logo-block">
+          <a href="../../index.html" class="logo-text">LIM YESUNG</a>
+        </div>
+        <nav class="site-nav">
+          <a href="../../index.html">About</a>
+          <a href="../../filmography.html">Filmography</a>
+          <a href="../../blackboard.html">Blackboard</a>
+          <a href="../../playground.html" class="nav-current">Playground</a>
+        </nav>
+      </div>
+    </header>
+  </div>
+
+  <canvas id="grid"></canvas>
+  <div id="trail"></div>
+  <div id="character"></div>
+  <div id="status">click to summon · <span>asciimo</span> is wandering</div>
+
+<script>
+const frames = {
+  idle: [
+    "┌╌╌╌╌╌┐\n┆     ┆░\n┆ ●_  ┆░\n┆     ┆░\n└╌╌╌╌╌┘░\n ░░░░░░░",
+    "┌╌╌╌╌╌┐\n┆     ┆░\n┆ ─_  ┆░\n┆     ┆░\n└╌╌╌╌╌┘░\n ░░░░░░░",
+    "┌╌╌╌╌╌┐\n┆     ┆░\n┆ ●_  ┆░\n┆     ┆░\n└╌╌╌╌╌┘░\n ░░░░░░░",
+    "┌╌╌╌╌╌┐\n┆     ┆░\n┆ ●_  ┆░\n┆     ┆░\n└╌╌╌╌╌┘░\n ░░░░░░░",
+  ],
+  walkRight: [
+    "┌╌╌╌╌╌┐\n┆     ┆░\n┆ ●_  ┆░\n┆   ╱ ┆░\n└╌╌╌╌╌┘░\n ░░░░░░░",
+    "┌╌╌╌╌╌┐\n┆     ┆░\n┆ ●_  ┆░\n┆  ╱  ┆░\n└╌╌╌╌╌┘░\n ░░░░░░░",
+    "┌╌╌╌╌╌┐\n┆     ┆░\n┆ ●_  ┆░\n┆   ╲ ┆░\n└╌╌╌╌╌┘░\n ░░░░░░░",
+    "┌╌╌╌╌╌┐\n┆     ┆░\n┆ ●_  ┆░\n┆  ╲  ┆░\n└╌╌╌╌╌┘░\n ░░░░░░░",
+  ],
+  walkLeft: [
+    "┌╌╌╌╌╌┐\n┆     ┆░\n┆ _●  ┆░\n┆ ╲   ┆░\n└╌╌╌╌╌┘░\n ░░░░░░░",
+    "┌╌╌╌╌╌┐\n┆     ┆░\n┆ _●  ┆░\n┆  ╲  ┆░\n└╌╌╌╌╌┘░\n ░░░░░░░",
+    "┌╌╌╌╌╌┐\n┆     ┆░\n┆ _●  ┆░\n┆ ╱   ┆░\n└╌╌╌╌╌┘░\n ░░░░░░░",
+    "┌╌╌╌╌╌┐\n┆     ┆░\n┆ _●  ┆░\n┆  ╱  ┆░\n└╌╌╌╌╌┘░\n ░░░░░░░",
+  ],
+  think: [
+    "┌╌╌╌╌╌┐\n┆     ┆░\n┆ ◦_  ┆░\n┆     ┆░\n└╌╌╌╌╌┘░\n ░░░░░░░",
+    "┌╌╌╌╌╌┐\n┆     ┆░\n┆ ○_  ┆░\n┆     ┆░\n└╌╌╌╌╌┘░\n ░░░░░░░",
+    "┌╌╌╌╌╌┐\n┆     ┆░\n┆ ◉_  ┆░\n┆     ┆░\n└╌╌╌╌╌┘░\n ░░░░░░░",
+    "┌╌╌╌╌╌┐\n┆     ┆░\n┆ ○_  ┆░\n┆     ┆░\n└╌╌╌╌╌┘░\n ░░░░░░░",
+  ],
+  sleep: [
+    "┌╌╌╌╌╌┐\n┆     ┆░\n┆ ─_  ┆░\n┆     ┆░\n└╌╌╌╌╌┘░\n ░░░░░░░",
+    "┌╌╌╌╌╌┐\n┆     ┆░\n┆ ᐧ_  ┆░\n┆     ┆░\n└╌╌╌╌╌┘░\n ░░░░░░░",
+  ],
+  jump: [
+    "       \n┌╌╌╌╌╌┐\n┆     ┆░\n┆ ●_  ┆░\n┆     ┆░\n└╌╌╌╌╌┘░",
+    "       \n       \n┌╌╌╌╌╌┐\n┆ ●_  ┆░\n└╌╌╌╌╌┘░\n ░░░░░░░",
+    "       \n┌╌╌╌╌╌┐\n┆     ┆░\n┆ ●_  ┆░\n┆     ┆░\n└╌╌╌╌╌┘░",
+    "┌╌╌╌╌╌┐\n┆     ┆░\n┆ ●_  ┆░\n┆     ┆░\n└╌╌╌╌╌┘░\n ░░░░░░░",
+  ],
+  wave: [
+    "┌╌╌╌╌╌┐ ╱\n┆     ┆░\n┆ ●_  ┆░\n┆     ┆░\n└╌╌╌╌╌┘░\n ░░░░░░░",
+    "┌╌╌╌╌╌┐─\n┆     ┆░\n┆ ●_  ┆░\n┆     ┆░\n└╌╌╌╌╌┘░\n ░░░░░░░",
+    "┌╌╌╌╌╌┐ ╲\n┆     ┆░\n┆ ●_  ┆░\n┆     ┆░\n└╌╌╌╌╌┘░\n ░░░░░░░",
+    "┌╌╌╌╌╌┐─\n┆     ┆░\n┆ ●_  ┆░\n┆     ┆░\n└╌╌╌╌╌┘░\n ░░░░░░░",
+  ],
+};
+
+const thoughts = [
+  "git push...",
+  "npm install",
+  "cargo build",
+  "// TODO",
+  "fn main()",
+  "0xCAFE",
+  "async/await",
+  "pub mod",
+  ":wq",
+  "^C ^C ^C",
+  "segfault?",
+  "LGTM",
+  "const _=",
+  "127.0.0.1",
+  "chmod 755",
+  "sudo !!",
+  "pipe |>",
+  "λ x.x",
+];
+
+const el = document.getElementById('character');
+const trailEl = document.getElementById('trail');
+const statusEl = document.getElementById('status');
+
+let x, y, vx = 0, vy = 0;
+let targetX = null, targetY = null;
+let state = 'idle';
+let frameIdx = 0;
+let frameTick = 0;
+let stateTimer = 0;
+let trailTimer = 0;
+let thoughtTimer = 0;
+let bobPhase = 0;
+
+/* header height so the character stays below the nav */
+function headerH() {
+  const h = document.querySelector('.site-header');
+  return h ? h.offsetHeight : 0;
+}
+
+function init() {
+  x = window.innerWidth / 2 - 50;
+  y = window.innerHeight / 2 - 40;
+  pickNewState();
+  drawGrid();
+  loop();
+}
+
+function drawGrid() {
+  const canvas = document.getElementById('grid');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  ctx.strokeStyle = '#c4a882';
+  ctx.lineWidth = 0.5;
+  const s = 30;
+  for (let gx = 0; gx < canvas.width; gx += s) {
+    ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, canvas.height); ctx.stroke();
+  }
+  for (let gy = 0; gy < canvas.height; gy += s) {
+    ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(canvas.width, gy); ctx.stroke();
+  }
+}
+
+function pickNewState() {
+  const states = ['idle', 'wander', 'think', 'sleep', 'jump', 'wave'];
+  const weights = [25, 35, 15, 10, 8, 7];
+  let r = Math.random() * 100;
+  let s = 'idle';
+  for (let i = 0; i < states.length; i++) {
+    r -= weights[i];
+    if (r <= 0) { s = states[i]; break; }
+  }
+  state = s;
+  stateTimer = 0;
+  frameIdx = 0;
+
+  if (state === 'wander') {
+    const pad = 120;
+    const top = headerH() + pad;
+    targetX = pad + Math.random() * (window.innerWidth - pad * 2);
+    targetY = top + Math.random() * (window.innerHeight - top - pad);
+  }
+
+  updateStatus();
+}
+
+function updateStatus() {
+  const labels = {
+    idle: 'idling',
+    wander: 'wandering',
+    think: 'thinking',
+    sleep: 'sleeping',
+    jump: 'jumping',
+    wave: 'waving',
+    goTo: 'coming to you',
+  };
+  statusEl.innerHTML = `click to summon · <span>asciimo</span> is ${labels[state] || 'wandering'}`;
+}
+
+document.addEventListener('click', (e) => {
+  /* ignore clicks on the header nav */
+  if (e.target.closest('.site-header')) return;
+
+  targetX = e.clientX - 40;
+  targetY = e.clientY - 50;
+  state = 'goTo';
+  stateTimer = 0;
+  updateStatus();
+
+  for (let i = 0; i < 6; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = (e.clientX + (Math.random() - 0.5) * 20) + 'px';
+    p.style.top = (e.clientY + (Math.random() - 0.5) * 20) + 'px';
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 1000);
+  }
+});
+
+window.addEventListener('resize', drawGrid);
+
+function loop() {
+  stateTimer++;
+  frameTick++;
+  trailTimer++;
+  thoughtTimer++;
+  bobPhase += 0.04;
+
+  if (state === 'idle') {
+    const speed = 200;
+    if (frameTick % speed === 0) frameIdx = (frameIdx + 1) % frames.idle.length;
+    el.textContent = frames.idle[frameIdx];
+    if (stateTimer > 180 + Math.random() * 200) pickNewState();
+  }
+  else if (state === 'wander' || state === 'goTo') {
+    const tx = targetX ?? x;
+    const ty = targetY ?? y;
+    const dx = tx - x;
+    const dy = ty - y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+
+    if (dist > 5) {
+      const spd = state === 'goTo' ? 3.5 : 1.8;
+      vx += (dx / dist) * spd * 0.08;
+      vy += (dy / dist) * spd * 0.08;
+      vx *= 0.92;
+      vy *= 0.92;
+      x += vx;
+      y += vy;
+
+      const anim = vx > 0.2 ? 'walkRight' : vx < -0.2 ? 'walkLeft' : 'walkRight';
+      if (frameTick % 8 === 0) frameIdx = (frameIdx + 1) % frames[anim].length;
+      el.textContent = frames[anim][frameIdx];
+
+      if (trailTimer % 12 === 0) spawnTrail();
+    } else {
+      vx = 0; vy = 0;
+      targetX = null; targetY = null;
+      if (state === 'goTo') {
+        state = 'wave';
+        stateTimer = 0;
+        frameIdx = 0;
+        updateStatus();
+      } else {
+        pickNewState();
+      }
+    }
+
+    if (state === 'wander' && stateTimer > 400) pickNewState();
+  }
+  else if (state === 'think') {
+    if (frameTick % 18 === 0) frameIdx = (frameIdx + 1) % frames.think.length;
+    el.textContent = frames.think[frameIdx];
+    if (thoughtTimer % 80 === 0) spawnThought();
+    if (stateTimer > 200 + Math.random() * 150) pickNewState();
+  }
+  else if (state === 'sleep') {
+    if (frameTick % 40 === 0) frameIdx = (frameIdx + 1) % frames.sleep.length;
+    el.textContent = frames.sleep[frameIdx];
+    if (thoughtTimer % 60 === 0) spawnSleepZ();
+    if (stateTimer > 250 + Math.random() * 200) pickNewState();
+  }
+  else if (state === 'jump') {
+    if (frameTick % 10 === 0) {
+      frameIdx = (frameIdx + 1) % frames.jump.length;
+      if (frameIdx === 0 && stateTimer > 40) pickNewState();
+    }
+    el.textContent = frames.jump[frameIdx];
+  }
+  else if (state === 'wave') {
+    if (frameTick % 10 === 0) frameIdx = (frameIdx + 1) % frames.wave.length;
+    el.textContent = frames.wave[frameIdx];
+    if (stateTimer > 100) pickNewState();
+  }
+
+  /* keep character inside viewport and below header */
+  const top = headerH() + 8;
+  x = Math.max(8, Math.min(window.innerWidth - 90, x));
+  y = Math.max(top, Math.min(window.innerHeight - 100, y));
+
+  const bob = state === 'sleep' ? Math.sin(bobPhase * 0.5) * 2 : Math.sin(bobPhase) * 1.5;
+  el.style.left = x + 'px';
+  el.style.top = (y + bob) + 'px';
+
+  requestAnimationFrame(loop);
+}
+
+function spawnTrail() {
+  const dot = document.createElement('div');
+  dot.className = 'trail-dot';
+  dot.style.left = x + 'px';
+  dot.style.top = y + 'px';
+  dot.textContent = frames.idle[0];
+  trailEl.appendChild(dot);
+  setTimeout(() => dot.remove(), 1800);
+}
+
+function spawnThought() {
+  const t = document.createElement('div');
+  t.className = 'thought-bubble';
+  t.textContent = thoughts[Math.floor(Math.random() * thoughts.length)];
+  t.style.left = (x + 80) + 'px';
+  t.style.top = (y - 10) + 'px';
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3000);
+}
+
+function spawnSleepZ() {
+  const z = document.createElement('div');
+  z.className = 'thought-bubble';
+  const zCount = Math.floor(Math.random() * 3) + 1;
+  z.textContent = 'z'.repeat(zCount) + 'Z'.repeat(Math.max(0, zCount - 1));
+  z.style.left = (x + 70 + Math.random() * 20) + 'px';
+  z.style.top = (y - 5) + 'px';
+  document.body.appendChild(z);
+  setTimeout(() => z.remove(), 3000);
+}
+
+init();
+</script>
+</body>
+</html>
