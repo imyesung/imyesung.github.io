@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+
+  <title>DOOM – LIM YESUNG</title>
+  <meta name="description" content="DOOM (1993) running in the browser via js-dos." />
+
+  <link rel="canonical" href="https://imyesung.github.io/playground/doom/" />
+  <link rel="stylesheet" href="../../style.css" />
+
+  <style>
+    :root {
+      --navy: #1b2d45;
+      --navy-light: #4a6a8a;
+      --navy-faint: #e8edf2;
+    }
+
+    /* --- back link --- */
+    .back-link {
+      display: inline-block;
+      margin-bottom: 2rem;
+      font-size: 0.9rem;
+      color: #666;
+      text-decoration: none;
+    }
+    .back-link:hover {
+      color: #111;
+    }
+
+    /* --- header --- */
+    .doom-rule {
+      border: none;
+      height: 4px;
+      background: var(--navy);
+      margin: 0 0 2rem;
+    }
+
+    .doom-title {
+      font-size: 3.5rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      line-height: 1;
+      margin: 0 0 0.3rem;
+      color: var(--navy);
+      text-transform: uppercase;
+    }
+
+    .doom-subtitle {
+      font-size: 0.85rem;
+      color: var(--navy-light);
+      letter-spacing: 0.06em;
+      margin: 0 0 2rem;
+    }
+
+    /* --- emulator frame --- */
+    .doom-frame {
+      border: 3px solid var(--navy);
+      background: #000;
+      margin: 0 -1.5rem;
+    }
+
+    .doom-frame .dosbox-container {
+      width: 100% !important;
+      height: 400px !important;
+    }
+
+    .doom-frame .dosbox-container .dosbox-overlay {
+      background: #000 !important;
+    }
+
+    .doom-frame .dosbox-container .dosbox-overlay .dosbox-start {
+      border-radius: 0;
+      border: 2px solid var(--navy-light);
+      background: rgba(27, 45, 69, 0.25);
+      color: #ddd;
+      padding: 0.5rem 1.4rem;
+      font-family: inherit;
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+    }
+
+    /* --- controls --- */
+    .doom-controls {
+      margin-top: 1rem;
+      display: flex;
+      align-items: baseline;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+    }
+
+    .doom-fullscreen-btn {
+      font-size: 0.85rem;
+      color: var(--navy);
+      cursor: pointer;
+      background: none;
+      border: none;
+      border-bottom: 1px solid transparent;
+      font-family: inherit;
+      padding: 0;
+    }
+
+    .doom-fullscreen-btn:hover {
+      border-bottom-color: var(--navy);
+    }
+
+    .doom-hint {
+      font-size: 0.8rem;
+      color: #888;
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    .doom-hint kbd {
+      display: inline-block;
+      font-family: inherit;
+      font-size: 0.78rem;
+      border: 1px solid #ccc;
+      border-bottom-width: 2px;
+      border-radius: 3px;
+      padding: 0.1rem 0.4rem;
+      background: #fff;
+      color: #333;
+    }
+
+    /* --- how it works --- */
+    .doom-note {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid #d0d0d0;
+    }
+
+    .doom-note h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin: 0 0 1rem;
+    }
+
+    .doom-note p {
+      font-size: 0.9rem;
+      color: #444;
+      line-height: 1.75;
+      margin: 0 0 1rem;
+    }
+
+    .doom-note p:last-child {
+      margin-bottom: 0;
+    }
+
+    .doom-note code {
+      font-size: 0.84rem;
+      background: var(--navy-faint);
+      padding: 0.15rem 0.4rem;
+      border-radius: 3px;
+    }
+
+    .doom-note a {
+      color: var(--navy);
+      text-decoration: underline;
+    }
+
+    .doom-note a:hover {
+      color: var(--navy-light);
+    }
+
+    /* --- diagram --- */
+    .doom-diagram {
+      margin: 1.5rem 0;
+      overflow-x: auto;
+    }
+
+    .doom-diagram svg {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* --- responsive --- */
+    @media (max-width: 600px) {
+      .doom-title {
+        font-size: 2.4rem;
+        letter-spacing: 0.1em;
+      }
+      .doom-frame {
+        margin: 0 -1.2rem;
+        border-width: 2px;
+      }
+      .doom-frame .dosbox-container {
+        height: 260px !important;
+      }
+      .doom-controls {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+    }
+
+    @media (min-width: 900px) {
+      .doom-frame {
+        margin: 0 -2rem;
+      }
+    }
+  </style>
+</head>
+<body class="page-playground">
+  <div class="page-wrap">
+
+    <header class="site-header">
+      <div class="site-header-inner">
+        <div class="logo-block">
+          <a href="../../index.html" class="logo-text">LIM YESUNG</a>
+        </div>
+        <nav class="site-nav">
+          <a href="../../index.html">About</a>
+          <a href="../../filmography.html">Filmography</a>
+          <a href="../../blackboard.html">Blackboard</a>
+          <a href="../../playground.html" class="nav-current">Playground</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="site-main">
+      <section class="section">
+        <div class="section-inner">
+          <a href="../../playground.html" class="back-link">&larr; Playground</a>
+
+          <hr class="doom-rule" />
+          <h1 class="doom-title">Doom</h1>
+          <p class="doom-subtitle">id Software, 1993 &middot; Shareware v1.9</p>
+
+          <div class="doom-frame" id="doom"></div>
+
+          <div class="doom-controls">
+            <button class="doom-fullscreen-btn" id="fullscreenBtn">Fullscreen</button>
+            <p class="doom-hint">
+              <kbd>&larr;</kbd><kbd>&uarr;</kbd><kbd>&darr;</kbd><kbd>&rarr;</kbd> move
+              &middot; <kbd>Ctrl</kbd> fire
+              &middot; <kbd>Space</kbd> use
+              &middot; <kbd>Shift</kbd> run
+            </p>
+          </div>
+
+          <div class="doom-note">
+            <h2>How this works</h2>
+
+            <p>
+              DOOM shipped in 1993 as a DOS program.
+              DOS (Disk Operating System) was the text-based OS that preceded Windows&mdash;you
+              typed commands into a prompt to launch executables.
+              A modern browser has no idea what to do with a DOS binary.
+            </p>
+
+            <p>
+              The trick is <a href="https://js-dos.com">js-dos</a>, an open-source project
+              that compiles DOSBox&mdash;itself a full x86 CPU and DOS environment
+              emulator&mdash;into WebAssembly.
+              WebAssembly (Wasm) is a low-level binary format that runs inside
+              the browser at near-native speed.
+              So what you get is a virtual 1993 PC, booting virtual DOS,
+              running the original <code>DOOM.EXE</code>,
+              all inside a browser tab in 2026.
+            </p>
+
+            <div class="doom-diagram">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 310" fill="none">
+                <!-- CDN box -->
+                <rect x="1.5" y="1.5" width="130" height="50" rx="4" stroke="#1b2d45" stroke-width="2" fill="#e8edf2"/>
+                <text x="66" y="22" text-anchor="middle" font-family="'Iowan Old Style',Palatino,Georgia,serif" font-size="11" font-weight="600" fill="#1b2d45">CDN Server</text>
+                <text x="66" y="38" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="9" fill="#4a6a8a">DOOM-bundle.zip</text>
+
+                <!-- Arrow CDN to Browser -->
+                <line x1="132" y1="26" x2="175" y2="26" stroke="#1b2d45" stroke-width="1.5" stroke-dasharray="5,3"/>
+                <polygon points="175,22 183,26 175,30" fill="#1b2d45"/>
+                <text x="157" y="18" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="8" fill="#4a6a8a">HTTPS</text>
+
+                <!-- Browser outer box -->
+                <rect x="185" y="1.5" width="333" height="305" rx="5" stroke="#1b2d45" stroke-width="2.5" fill="#fff"/>
+                <text x="351" y="22" text-anchor="middle" font-family="'Iowan Old Style',Palatino,Georgia,serif" font-size="12" font-weight="600" fill="#1b2d45">Browser Tab</text>
+                <line x1="185" y1="32" x2="518" y2="32" stroke="#1b2d45" stroke-width="1"/>
+
+                <!-- JS layer -->
+                <rect x="205" y="46" width="293" height="48" rx="4" stroke="#1b2d45" stroke-width="1.5" fill="#e8edf2"/>
+                <text x="351" y="66" text-anchor="middle" font-family="'Iowan Old Style',Palatino,Georgia,serif" font-size="11" font-weight="600" fill="#1b2d45">JavaScript &mdash; js-dos API</text>
+                <text x="351" y="82" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="9" fill="#4a6a8a">input capture, audio, canvas rendering</text>
+
+                <!-- Arrow JS to Wasm -->
+                <line x1="351" y1="94" x2="351" y2="110" stroke="#1b2d45" stroke-width="1.5"/>
+                <polygon points="347,110 351,118 355,110" fill="#1b2d45"/>
+
+                <!-- Wasm layer -->
+                <rect x="205" y="120" width="293" height="48" rx="4" stroke="#1b2d45" stroke-width="1.5" fill="#e8edf2"/>
+                <text x="351" y="140" text-anchor="middle" font-family="'Iowan Old Style',Palatino,Georgia,serif" font-size="11" font-weight="600" fill="#1b2d45">WebAssembly &mdash; DOSBox</text>
+                <text x="351" y="156" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="9" fill="#4a6a8a">x86 CPU emulation, memory, I/O</text>
+
+                <!-- Arrow Wasm to DOS -->
+                <line x1="351" y1="168" x2="351" y2="184" stroke="#1b2d45" stroke-width="1.5"/>
+                <polygon points="347,184 351,192 355,184" fill="#1b2d45"/>
+
+                <!-- Virtual DOS layer -->
+                <rect x="225" y="194" width="253" height="44" rx="4" stroke="#1b2d45" stroke-width="1.5" fill="#f6f8fa"/>
+                <text x="351" y="214" text-anchor="middle" font-family="'Iowan Old Style',Palatino,Georgia,serif" font-size="11" font-weight="600" fill="#1b2d45">Virtual DOS Environment</text>
+                <text x="351" y="229" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="9" fill="#4a6a8a">filesystem, interrupts, VGA</text>
+
+                <!-- Arrow DOS to DOOM -->
+                <line x1="351" y1="238" x2="351" y2="254" stroke="#1b2d45" stroke-width="1.5"/>
+                <polygon points="347,254 351,262 355,254" fill="#1b2d45"/>
+
+                <!-- DOOM box -->
+                <rect x="285" y="264" width="132" height="32" rx="4" stroke="#1b2d45" stroke-width="2" fill="#1b2d45"/>
+                <text x="351" y="285" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="12" font-weight="700" fill="#fff">DOOM.EXE</text>
+
+                <!-- Side labels -->
+                <text x="195" y="74" text-anchor="end" font-family="'Iowan Old Style',Palatino,Georgia,serif" font-size="8" fill="#4a6a8a" transform="rotate(-90,195,74)">orchestration</text>
+                <text x="195" y="148" text-anchor="end" font-family="'Iowan Old Style',Palatino,Georgia,serif" font-size="8" fill="#4a6a8a" transform="rotate(-90,195,148)">emulation</text>
+                <text x="195" y="226" text-anchor="end" font-family="'Iowan Old Style',Palatino,Georgia,serif" font-size="8" fill="#4a6a8a" transform="rotate(-90,195,226)">execution</text>
+              </svg>
+            </div>
+
+            <p>
+              The game files live on a CDN (Content Delivery Network)&mdash;a
+              geographically distributed cluster of servers designed to serve
+              static assets from whichever node is closest to the user.
+              When you open this page, the browser pulls a ~2 MB bundle
+              from js-dos.com&rsquo;s CDN, js-dos mounts it into a virtual
+              filesystem, and boots <code>DOOM.EXE</code> from there.
+              Nothing is installed locally.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="site-footer-inner">
+        <span>&copy; 2025</span>
+        <span>limyesung</span>
+        <a href="https://github.com/imyesung" class="footer-github" aria-label="GitHub">
+          <svg class="github-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="https://js-dos.com/cdn/js-dos-api.js"></script>
+  <script>
+    var dosbox = new Dosbox({
+      id: "doom",
+      onload: function (dosbox) {
+        dosbox.run("https://js-dos.com/cdn/upload/DOOM-@evilution.zip", "./DOOM/DOOM.EXE");
+      },
+      onrun: function (dosbox, app) {
+        console.log("DOOM is running");
+      }
+    });
+
+    document.getElementById("fullscreenBtn").addEventListener("click", function () {
+      dosbox.requestFullScreen();
+    });
+  </script>
+</body>
+</html>
