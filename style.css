@@ -121,6 +121,10 @@ body {
   padding-bottom: 3rem;
 }
 
+.page-blackboard .section-inner {
+  max-width: 44rem;
+}
+
 /* ── About ── */
 
 .section-about {
