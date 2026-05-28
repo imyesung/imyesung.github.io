@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+
+  <title>How a 1993 DOS Binary Runs in a 2026 Browser – LIM YESUNG</title>
+  <meta name="description" content="DOOM (1993) running in a modern browser via DOSBox compiled to WebAssembly." />
+
+  <link rel="canonical" href="https://imyesung.github.io/blackboard/doom-in-the-browser.html" />
+  <link rel="stylesheet" href="../style.css" />
+
+  <style>
+    :root {
+      --navy: #1b2d45;
+      --navy-light: #4a6a8a;
+      --navy-faint: #e8edf2;
+    }
+
+    .essay-header {
+      margin: 0 0 2rem;
+    }
+
+    .essay-header h1 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      line-height: 1.45;
+      color: var(--navy);
+      margin: 0 0 0.5rem;
+    }
+
+    .essay-meta {
+      font-size: 0.875rem;
+      color: #666;
+      letter-spacing: 0.02em;
+      margin: 0;
+    }
+
+    .essay-body h2 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin: 2.5rem 0 1rem;
+    }
+
+    .essay-body p {
+      margin: 0 0 1rem;
+      line-height: 1.75;
+    }
+
+    .essay-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    .essay-body code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.88rem;
+      background: var(--navy-faint);
+      padding: 0.1rem 0.4rem;
+      border-radius: 3px;
+    }
+
+    .essay-body a {
+      color: var(--navy);
+      text-decoration: underline;
+    }
+
+    .essay-body a:hover {
+      color: var(--navy-light);
+    }
+
+    .essay-diagram {
+      margin: 2rem 0;
+      overflow-x: auto;
+    }
+
+    .essay-diagram svg {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+  </style>
+</head>
+<body class="page-blackboard">
+  <div class="page-wrap">
+
+    <header class="site-header">
+      <div class="site-header-inner">
+        <div class="logo-block">
+          <a href="../index.html" class="logo-text">LIM YESUNG</a>
+        </div>
+        <nav class="site-nav">
+          <a href="../index.html">About</a>
+          <a href="../filmography.html">Filmography</a>
+          <a href="../blackboard.html" class="nav-current">Blackboard</a>
+          <a href="../playground.html">Playground</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="site-main">
+      <section class="section">
+        <div class="section-inner">
+
+          <header class="essay-header">
+            <h1>How a 1993 DOS Binary Runs in a 2026 Browser</h1>
+            <p class="essay-meta">Systems &middot; WebAssembly &middot; 2025</p>
+          </header>
+
+          <div class="essay-body">
+
+            <p>
+              DOOM shipped in 1993 as a DOS binary, and a modern browser has no idea what to do with one.
+              The trick that lets it run anyway &mdash; a full x86 CPU emulator compiled to WebAssembly &mdash;
+              is more interesting than the game itself.
+            </p>
+
+            <h2>The trick</h2>
+
+            <p>
+              DOS (Disk Operating System) was the text-based OS that preceded Windows; you typed commands into a prompt to launch executables.
+              DOOM was one of those executables: a single binary that talked directly to the x86 CPU, VGA card, and Sound Blaster,
+              with no kernel or window manager standing in between.
+            </p>
+
+            <p>
+              <a href="https://js-dos.com">js-dos</a> compiles <a href="https://www.dosbox.com">DOSBox</a> &mdash;
+              a full x86 CPU and DOS environment emulator &mdash; into WebAssembly (Wasm),
+              a low-level binary format the browser executes at near-native speed.
+              The four-step sequence:
+            </p>
+
+            <div class="essay-diagram">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 420" fill="none">
+                <style>
+                  .d-serif { font-family: 'Iowan Old Style',Palatino,Georgia,serif; fill: #1b2d45; }
+                  .d-mono  { font-family: ui-monospace,SFMono-Regular,Menlo,monospace; fill: #4a6a8a; }
+                  .d-step  { font-family: ui-monospace,SFMono-Regular,Menlo,monospace; font-size: 10px; font-weight: 700; fill: #fff; }
+                  .d-label { font-family: 'Iowan Old Style',Palatino,Georgia,serif; font-size: 11.5px; font-weight: 600; fill: #1b2d45; }
+                  .d-desc  { font-family: 'Iowan Old Style',Palatino,Georgia,serif; font-size: 10px; fill: #4a6a8a; }
+                </style>
+
+                <!-- Step 1: Fetch -->
+                <circle cx="30" cy="36" r="14" fill="#1b2d45"/>
+                <text x="30" y="40" text-anchor="middle" class="d-step">1</text>
+                <text x="54" y="32" class="d-label">Fetch</text>
+                <text x="54" y="46" class="d-desc">Browser pulls ~2 MB over HTTPS from a CDN:</text>
+
+                <rect x="54" y="56" width="410" height="46" rx="4" stroke="#1b2d45" stroke-width="1.5" fill="#e8edf2"/>
+                <text x="74" y="74" class="d-mono" font-size="9.5">js-dos-api.js</text>
+                <text x="190" y="74" class="d-desc">emulator engine (DOSBox &rarr; WebAssembly)</text>
+                <text x="74" y="90" class="d-mono" font-size="9.5">DOOM-bundle.zip</text>
+                <text x="210" y="90" class="d-desc">DOOM.EXE + DOOM1.WAD + dosbox.conf</text>
+
+                <!-- Arrow -->
+                <line x1="30" y1="108" x2="30" y2="134" stroke="#1b2d45" stroke-width="1.5"/>
+                <polygon points="26,134 30,142 34,134" fill="#1b2d45"/>
+
+                <!-- Step 2: Boot -->
+                <circle cx="30" cy="158" r="14" fill="#1b2d45"/>
+                <text x="30" y="162" text-anchor="middle" class="d-step">2</text>
+                <text x="54" y="154" class="d-label">Boot</text>
+                <text x="54" y="168" class="d-desc">DOSBox, compiled to WebAssembly, starts inside the browser.</text>
+
+                <rect x="54" y="178" width="410" height="36" rx="4" stroke="#1b2d45" stroke-width="1.5" fill="#fff"/>
+                <text x="74" y="196" class="d-mono" font-size="9.5">DOSBox&mdash;Wasm</text>
+                <text x="186" y="196" class="d-desc">emulates x86 CPU, memory, VGA, Sound Blaster, keyboard</text>
+
+                <!-- Arrow -->
+                <line x1="30" y1="220" x2="30" y2="246" stroke="#1b2d45" stroke-width="1.5"/>
+                <polygon points="26,246 30,254 34,246" fill="#1b2d45"/>
+
+                <!-- Step 3: Mount -->
+                <circle cx="30" cy="270" r="14" fill="#1b2d45"/>
+                <text x="30" y="274" text-anchor="middle" class="d-step">3</text>
+                <text x="54" y="266" class="d-label">Mount</text>
+                <text x="54" y="280" class="d-desc">The bundle is extracted into a virtual DOS filesystem.</text>
+
+                <rect x="54" y="290" width="410" height="28" rx="4" stroke="#1b2d45" stroke-width="1.5" fill="#f6f8fa"/>
+                <text x="74" y="309" class="d-mono" font-size="10">C:\DOOM\</text>
+                <text x="150" y="309" class="d-mono" font-size="9.5">DOOM.EXE &nbsp; DOOM1.WAD &nbsp; dosbox.conf</text>
+
+                <!-- Arrow -->
+                <line x1="30" y1="324" x2="30" y2="350" stroke="#1b2d45" stroke-width="1.5"/>
+                <polygon points="26,350 30,358 34,350" fill="#1b2d45"/>
+
+                <!-- Step 4: Execute -->
+                <circle cx="30" cy="374" r="14" fill="#1b2d45"/>
+                <text x="30" y="378" text-anchor="middle" class="d-step">4</text>
+                <text x="54" y="370" class="d-label">Execute</text>
+                <text x="54" y="384" class="d-desc">The original 1993 binary runs on the emulated x86 CPU.</text>
+
+                <rect x="54" y="394" width="172" height="24" rx="4" stroke="#1b2d45" stroke-width="2" fill="#1b2d45"/>
+                <text x="140" y="411" text-anchor="middle" class="d-mono" font-size="11" font-weight="700" style="fill:#fff">C:\DOOM> DOOM.EXE</text>
+              </svg>
+            </div>
+
+            <p>
+              A CDN (Content Delivery Network) is a geographically distributed cluster of servers that serves static files from whichever node is closest to the user.
+              The ~2&nbsp;MB DOOM bundle is hosted on js-dos.com&rsquo;s CDN.
+              Nothing is installed on the machine &mdash; everything lives in the browser tab&rsquo;s memory and disappears when the tab closes.
+            </p>
+
+            <h2>Beyond DOS</h2>
+
+            <p>
+              This pattern isn&rsquo;t limited to DOOM or even DOS.
+              If an emulator exists for a platform, it can be compiled to WebAssembly and run in a browser.
+              <a href="https://copy.sh/v86/">v86</a> emulates a full x86 PC and can boot Windows&nbsp;95, 98, or Linux.
+              Console emulators for the NES, SNES, and Game Boy Advance have all been ported to Wasm.
+              The constraint is performance &mdash; emulation has overhead &mdash; but for anything from the pre-2000s era, a 2026 machine has cycles to spare.
+            </p>
+
+          </div>
+
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="site-footer-inner">
+        <span>&copy; 2026</span>
+        <span>limyesung</span>
+        <a href="https://github.com/imyesung" class="footer-github" aria-label="GitHub">
+          <svg class="github-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </footer>
+
+  </div>
+</body>
+</html>
