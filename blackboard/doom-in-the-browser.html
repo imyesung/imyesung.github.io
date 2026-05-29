@@ -10,78 +10,6 @@
 
   <link rel="canonical" href="https://imyesung.github.io/blackboard/doom-in-the-browser.html" />
   <link rel="stylesheet" href="../style.css" />
-
-  <style>
-    :root {
-      --navy: #1b2d45;
-      --navy-light: #4a6a8a;
-      --navy-faint: #e8edf2;
-    }
-
-    .essay-header {
-      margin: 0 0 2rem;
-    }
-
-    .essay-header h1 {
-      font-size: 1.35rem;
-      font-weight: 700;
-      letter-spacing: 0.01em;
-      line-height: 1.45;
-      color: var(--navy);
-      margin: 0 0 0.5rem;
-    }
-
-    .essay-meta {
-      font-size: 0.875rem;
-      color: #666;
-      letter-spacing: 0.02em;
-      margin: 0;
-    }
-
-    .essay-body h2 {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: var(--navy);
-      margin: 2.5rem 0 1rem;
-    }
-
-    .essay-body p {
-      margin: 0 0 1rem;
-      line-height: 1.75;
-    }
-
-    .essay-body p:last-child {
-      margin-bottom: 0;
-    }
-
-    .essay-body code {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 0.88rem;
-      background: var(--navy-faint);
-      padding: 0.1rem 0.4rem;
-      border-radius: 3px;
-    }
-
-    .essay-body a {
-      color: var(--navy);
-      text-decoration: underline;
-    }
-
-    .essay-body a:hover {
-      color: var(--navy-light);
-    }
-
-    .essay-diagram {
-      margin: 2rem 0;
-      overflow-x: auto;
-    }
-
-    .essay-diagram svg {
-      display: block;
-      max-width: 100%;
-      height: auto;
-    }
-  </style>
 </head>
 <body class="page-blackboard">
   <div class="page-wrap">
@@ -103,13 +31,14 @@
     <main class="site-main">
       <section class="section">
         <div class="section-inner">
+          <a href="../blackboard.html" class="back-link">← Blackboard</a>
 
-          <header class="essay-header">
+          <header class="article-header">
             <h1>How a 1993 DOS Binary Runs in a 2026 Browser</h1>
-            <p class="essay-meta">Systems &middot; WebAssembly &middot; 2025</p>
+            <p class="article-meta">Systems &middot; WebAssembly &middot; 2025</p>
           </header>
 
-          <div class="essay-body">
+          <div class="article-body">
 
             <p>
               DOOM shipped in 1993 as a DOS binary, and a modern browser has no idea what to do with one.
@@ -132,7 +61,7 @@
               The four-step sequence:
             </p>
 
-            <div class="essay-diagram">
+            <div class="article-figure">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 420" fill="none">
                 <style>
                   .d-serif { font-family: 'Iowan Old Style',Palatino,Georgia,serif; fill: #1b2d45; }
