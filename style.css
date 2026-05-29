@@ -1,7 +1,24 @@
 /* ── Design tokens ──────────────────────────────────────────
    Type scale:  0.875rem · 1rem · 1.125rem
    Space scale: 0.25 · 0.5 · 0.75 · 1 · 1.5 · 2 · 3 · 4 rem
+   Color:       ink ramp · rules · surface · link
    ─────────────────────────────────────────────────────────── */
+
+:root {
+  --ink: #111111;        /* body text, strong UI */
+  --ink-strong: #333333; /* secondary text, table & figure borders */
+  --ink-soft: #555555;   /* subtitles, captions, descriptions */
+  --ink-muted: #666666;  /* metadata, nav, footer */
+  --ink-faint: #888888;  /* hints */
+
+  --rule: #d0d0d0;       /* primary dividers */
+  --rule-soft: #e5e5e5;  /* card separators, image frames */
+
+  --surface: #fafafa;    /* tinted panels (abstracts, code, image wells) */
+
+  --link: #0066cc;
+  --link-hover: #003399;
+}
 
 /* ── Reset ── */
 
@@ -19,7 +36,7 @@ body {
   margin: 0;
   padding: 0;
   background-color: #ffffff;
-  color: #111111;
+  color: var(--ink);
   font-family:
     "Latin Modern Roman",
     "Computer Modern",
@@ -53,21 +70,21 @@ body {
 /* ── Content links ── */
 
 .site-main a {
-  color: #0066cc;
+  color: var(--link);
 }
 
 .site-main a:visited {
-  color: #0066cc;
+  color: var(--link);
 }
 
 .site-main a:hover {
-  color: #003399;
+  color: var(--link-hover);
 }
 
 /* ── Header ── */
 
 .site-header {
-  border-bottom: 1px solid #d0d0d0;
+  border-bottom: 1px solid var(--rule);
   background-color: #ffffff;
 }
 
@@ -90,7 +107,7 @@ body {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   text-decoration: none;
-  color: #111111;
+  color: var(--ink);
 }
 
 .site-nav {
@@ -101,17 +118,17 @@ body {
 
 .site-nav a {
   text-decoration: none;
-  color: #555555;
+  color: var(--ink-soft);
   border-bottom: 1px solid transparent;
 }
 
 .site-nav a.nav-current {
-  color: #111111;
-  border-bottom-color: #111111;
+  color: var(--ink);
+  border-bottom-color: var(--ink);
 }
 
 .site-nav a:hover {
-  border-bottom-color: #555555;
+  border-bottom-color: var(--ink-soft);
 }
 
 /* ── Sections ── */
@@ -148,7 +165,7 @@ body {
 .about-contact {
   margin-top: 2rem;
   padding-top: 1.5rem;
-  border-top: 1px solid #d0d0d0;
+  border-top: 1px solid var(--rule);
 }
 
 .about-contact h2 {
@@ -162,7 +179,7 @@ body {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
                "Liberation Mono", "Courier New", monospace;
   font-size: 0.875rem;
-  color: #333333;
+  color: var(--ink-strong);
 }
 
 .about-contact .about-text a {
@@ -200,7 +217,7 @@ body {
 .project-card {
   margin-bottom: 3rem;
   padding-bottom: 2rem;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid var(--rule-soft);
 }
 
 .project-card:last-child {
@@ -215,7 +232,7 @@ body {
 
 .project-meta {
   font-size: 0.875rem;
-  color: #666666;
+  color: var(--ink-muted);
   letter-spacing: 0.02em;
   margin: 0.5rem 0;
 }
@@ -229,14 +246,14 @@ body {
 .project-role {
   margin: 0.25rem 0 0 0;
   font-size: 1rem;
-  color: #333333;
+  color: var(--ink-strong);
 }
 
 .project-notes {
   margin: 0.75rem 0 0 0;
   padding-left: 1.5rem;
   font-size: 0.875rem;
-  color: #444444;
+  color: var(--ink-soft);
 }
 
 .project-notes li {
@@ -269,7 +286,7 @@ body {
 
 .project-link-meta {
   font-size: 0.875rem;
-  color: #666666;
+  color: var(--ink-muted);
   margin-left: 0.5rem;
   white-space: nowrap;
 }
@@ -299,14 +316,14 @@ body {
 
 .site-footer {
   margin-top: auto;
-  border-top: 1px solid #d0d0d0;
+  border-top: 1px solid var(--rule);
   padding-top: 1rem;
   padding-bottom: 1.5rem;
 }
 
 .site-footer-inner {
   font-size: 0.875rem;
-  color: #666666;
+  color: var(--ink-muted);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -314,14 +331,14 @@ body {
 }
 
 .footer-github {
-  color: #666666;
+  color: var(--ink-muted);
   text-decoration: none;
   display: inline-flex;
   align-items: center;
 }
 
 .footer-github:hover {
-  color: #111111;
+  color: var(--ink);
 }
 
 /* ── Responsive ── */
