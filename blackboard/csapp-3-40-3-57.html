@@ -10,84 +10,6 @@
 
   <link rel="canonical" href="https://imyesung.github.io/blackboard/csapp-3-40-3-57.html" />
   <link rel="stylesheet" href="../style.css" />
-
-  <style>
-    .math-header {
-      display: flex;
-      align-items: baseline;
-      gap: 1rem;
-      flex-wrap: wrap;
-      margin-bottom: 1.5rem;
-    }
-    .math-header h1 {
-      margin: 0;
-      font-size: 1.1rem;
-      font-weight: 600;
-    }
-    .math-meta {
-      font-size: 0.85rem;
-      color: #666;
-    }
-    .math-container {
-      margin: 0 -1.5rem;
-    }
-    @media (min-width: 900px) {
-      .math-container {
-        margin: 0 calc(-50vw + 50%);
-        padding: 0 2rem;
-      }
-    }
-    .math-image {
-      width: 100%;
-      max-width: 1000px;
-      margin: 0 auto;
-      display: block;
-    }
-    .math-image img {
-      width: 100%;
-      height: auto;
-      display: block;
-      cursor: zoom-in;
-    }
-    .math-image img.zoomed {
-      cursor: zoom-out;
-      max-width: none;
-      width: auto;
-      max-height: none;
-    }
-    .image-wrapper {
-      overflow-x: auto;
-      background: #fafafa;
-      border-top: 1px solid #e5e5e5;
-      border-bottom: 1px solid #e5e5e5;
-      margin-bottom: 1rem;
-    }
-    .image-wrapper:last-of-type {
-      margin-bottom: 0;
-    }
-    .image-wrapper.zoomed {
-      cursor: grab;
-    }
-    .image-wrapper.zoomed:active {
-      cursor: grabbing;
-    }
-    .back-link {
-      display: inline-block;
-      margin-bottom: 1.5rem;
-      font-size: 0.9rem;
-      color: #666;
-      text-decoration: none;
-    }
-    .back-link:hover {
-      color: #111;
-    }
-    .zoom-hint {
-      font-size: 0.8rem;
-      color: #888;
-      margin-top: 0.75rem;
-      text-align: center;
-    }
-  </style>
 </head>
 <body class="page-blackboard">
   <div class="page-wrap">
@@ -110,34 +32,34 @@
       <section class="section section-blackboard">
         <div class="section-inner">
           <a href="../blackboard.html" class="back-link">← Blackboard</a>
-          
-          <div class="math-header">
+
+          <div class="article-header--inline">
             <h1>CSAPP 3.40–3.57</h1>
-            <span class="math-meta">x86-64 · CSAPP · 2026</span>
+            <span class="article-meta">x86-64 · CSAPP · 2026</span>
           </div>
         </div>
 
-        <div class="math-container">
+        <div class="article-wide">
           <div class="image-wrapper">
-            <div class="math-image">
-              <img src="../images/csapp-3-40-3-47-1.webp" 
-                   alt="CSAPP practice problems 3.40 through 3.47 (page 1)" 
+            <div class="figure-frame">
+              <img src="../images/csapp-3-40-3-47-1.webp"
+                   alt="CSAPP practice problems 3.40 through 3.47 (page 1)"
                    class="zoomable-img"
                    loading="eager" />
             </div>
           </div>
           <div class="image-wrapper">
-            <div class="math-image">
-              <img src="../images/csapp-3-40-3-47-2.webp" 
-                   alt="CSAPP practice problems 3.40 through 3.47 (page 2)" 
+            <div class="figure-frame">
+              <img src="../images/csapp-3-40-3-47-2.webp"
+                   alt="CSAPP practice problems 3.40 through 3.47 (page 2)"
                    class="zoomable-img"
                    loading="eager" />
             </div>
           </div>
           <div class="image-wrapper">
-            <div class="math-image">
-              <img src="../images/csapp-3-49-3-57.webp" 
-                   alt="CSAPP practice problems 3.49 through 3.57" 
+            <div class="figure-frame">
+              <img src="../images/csapp-3-49-3-57.webp"
+                   alt="CSAPP practice problems 3.49 through 3.57"
                    class="zoomable-img"
                    loading="lazy" />
             </div>
@@ -160,17 +82,6 @@
 
   </div>
 
-  <script>
-    const images = document.querySelectorAll('.zoomable-img');
-    const hint = document.getElementById('zoomHint');
-
-    images.forEach(img => {
-      img.addEventListener('click', () => {
-        const isZoomed = img.classList.toggle('zoomed');
-        img.closest('.image-wrapper').classList.toggle('zoomed', isZoomed);
-        hint.textContent = isZoomed ? 'Click image to fit · Scroll to pan' : 'Click image to zoom';
-      });
-    });
-  </script>
+  <script src="../image-zoom.js"></script>
 </body>
 </html>

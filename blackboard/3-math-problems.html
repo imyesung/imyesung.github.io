@@ -10,80 +10,6 @@
 
   <link rel="canonical" href="https://imyesung.github.io/blackboard/3-math-problems.html" />
   <link rel="stylesheet" href="../style.css" />
-
-  <style>
-    .math-header {
-      display: flex;
-      align-items: baseline;
-      gap: 1rem;
-      flex-wrap: wrap;
-      margin-bottom: 1.5rem;
-    }
-    .math-header h1 {
-      margin: 0;
-      font-size: 1.1rem;
-      font-weight: 600;
-    }
-    .math-meta {
-      font-size: 0.85rem;
-      color: #666;
-    }
-    .math-container {
-      margin: 0 -1.5rem;
-    }
-    @media (min-width: 900px) {
-      .math-container {
-        margin: 0 calc(-50vw + 50%);
-        padding: 0 2rem;
-      }
-    }
-    .math-image {
-      width: 100%;
-      max-width: 1000px;
-      margin: 0 auto;
-      display: block;
-    }
-    .math-image img {
-      width: 100%;
-      height: auto;
-      display: block;
-      cursor: zoom-in;
-    }
-    .math-image img.zoomed {
-      cursor: zoom-out;
-      max-width: none;
-      width: auto;
-      max-height: none;
-    }
-    .image-wrapper {
-      overflow-x: auto;
-      background: #fafafa;
-      border-top: 1px solid #e5e5e5;
-      border-bottom: 1px solid #e5e5e5;
-    }
-    .image-wrapper.zoomed {
-      cursor: grab;
-    }
-    .image-wrapper.zoomed:active {
-      cursor: grabbing;
-    }
-    .back-link {
-      display: inline-block;
-      margin-bottom: 1.5rem;
-      font-size: 0.9rem;
-      color: #666;
-      text-decoration: none;
-    }
-    .back-link:hover {
-      color: #111;
-    }
-    .zoom-hint {
-      font-size: 0.8rem;
-      color: #888;
-      margin-top: 0.75rem;
-      text-align: center;
-    }
-  </style>
 </head>
 <body class="page-blackboard">
   <div class="page-wrap">
@@ -106,19 +32,19 @@
       <section class="section section-blackboard">
         <div class="section-inner">
           <a href="../blackboard.html" class="back-link">← Blackboard</a>
-          
-          <div class="math-header">
+
+          <div class="article-header--inline">
             <h1>3 Math Problems</h1>
-            <span class="math-meta">Combinatorics · Geometry · 2025</span>
+            <span class="article-meta">Combinatorics · Geometry · 2025</span>
           </div>
         </div>
 
-        <div class="math-container">
-          <div class="image-wrapper" id="imageWrapper">
-            <div class="math-image">
-              <img src="../images/3-math-problems.webp" 
-                   alt="Pigeonhole principle, triangle covering, isoperimetric problem" 
-                   id="mathImg"
+        <div class="article-wide">
+          <div class="image-wrapper">
+            <div class="figure-frame">
+              <img src="../images/3-math-problems.webp"
+                   alt="Pigeonhole principle, triangle covering, isoperimetric problem"
+                   class="zoomable-img"
                    loading="eager" />
             </div>
           </div>
@@ -140,18 +66,6 @@
 
   </div>
 
-  <script>
-    const img = document.getElementById('mathImg');
-    const wrapper = document.getElementById('imageWrapper');
-    const hint = document.getElementById('zoomHint');
-    let isZoomed = false;
-
-    img.addEventListener('click', () => {
-      isZoomed = !isZoomed;
-      img.classList.toggle('zoomed', isZoomed);
-      wrapper.classList.toggle('zoomed', isZoomed);
-      hint.textContent = isZoomed ? 'Click image to fit · Scroll to pan' : 'Click image to zoom';
-    });
-  </script>
+  <script src="../image-zoom.js"></script>
 </body>
 </html>
