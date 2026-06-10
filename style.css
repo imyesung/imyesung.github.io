@@ -142,6 +142,10 @@ body {
   max-width: 48rem;
 }
 
+.page-filmography .section-inner {
+  max-width: 60rem;
+}
+
 /* ── About ── */
 
 .section-about {
@@ -545,5 +549,12 @@ body {
   .project-card {
     margin-bottom: 2rem;
     padding-bottom: 1.5rem;
+  }
+
+  /* full-bleed video: cancel the 1rem section padding */
+  .video-embed {
+    margin-left: -1rem;
+    margin-right: -1rem;
+    border-radius: 0;
   }
 }
