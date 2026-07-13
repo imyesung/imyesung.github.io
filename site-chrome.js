@@ -47,4 +47,30 @@
 
   var f = document.querySelector('[data-site-footer]');
   if (f) { f.className = 'site-footer'; f.innerHTML = footer; }
+
+  /* Keep math available site-wide without charging every page for MathJax.
+     Pages containing TeX delimiters load the same MathJax 3 renderer used by
+     the reference article; ordinary pages make no extra network request. */
+  var pageText = document.body ? document.body.textContent : '';
+  var hasMath = /\\\(|\\\[/.test(pageText);
+  var hasMathJaxLoader = Array.prototype.some.call(document.scripts, function (script) {
+    return /mathjax/i.test(script.src);
+  });
+
+  if (hasMath && !hasMathJaxLoader) {
+    var mathJaxConfig = window.MathJax || {};
+    mathJaxConfig.tex = mathJaxConfig.tex || {};
+    if (!mathJaxConfig.tex.inlineMath) mathJaxConfig.tex.inlineMath = [['\\(', '\\)']];
+    if (!mathJaxConfig.tex.displayMath) mathJaxConfig.tex.displayMath = [['\\[', '\\]']];
+    if (typeof mathJaxConfig.tex.processEscapes === 'undefined') {
+      mathJaxConfig.tex.processEscapes = true;
+    }
+    window.MathJax = mathJaxConfig;
+
+    var mathScript = document.createElement('script');
+    mathScript.id = 'MathJax-script';
+    mathScript.async = true;
+    mathScript.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js';
+    document.head.appendChild(mathScript);
+  }
 })();

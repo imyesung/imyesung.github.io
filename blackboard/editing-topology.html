@@ -30,8 +30,6 @@
     .paper-header {
       text-align: center;
       margin-bottom: 2.5rem;
-      padding-bottom: 2rem;
-      border-bottom: 1px solid var(--rule);
     }
     .paper-header h1 {
       margin: 0 0 0.5rem 0;
@@ -57,10 +55,10 @@
     .paper-abstract {
       margin: 0 0 2.5rem 0;
       padding: 1.25rem 1.5rem;
-      background: var(--surface);
-      border-left: 3px solid var(--rule);
+      background: transparent;
+      border: 1px solid var(--ink);
       font-size: 0.92rem;
-      line-height: 1.75;
+      line-height: var(--copy-leading);
     }
     .paper-abstract p {
       margin: 0 0 0.75rem 0;
@@ -86,21 +84,12 @@
       font-weight: 700;
     }
 
-    /* ── Math ── */
-    .m {
-      font-family: "Latin Modern Math", "Cambria Math", "STIX Two Math",
-                   "Times New Roman", serif;
-      font-style: italic;
-      white-space: nowrap;
-    }
-    .m sub, .m sup {
-      font-size: 0.8em;
-    }
+    /* ── Definition ── */
     .definition {
       margin: 1.5rem 0;
       padding: 1rem 1.25rem;
-      background: var(--surface);
-      border: 1px solid var(--rule-soft);
+      background: transparent;
+      border: 1px solid var(--ink);
     }
     .definition .def-label {
       font-weight: 700;
@@ -110,6 +99,7 @@
     .paper-figure {
       margin: 2rem 0;
       text-align: center;
+      overflow-x: auto;
     }
     .paper-figure figcaption {
       margin-top: 0.75rem;
@@ -252,7 +242,7 @@
 
             <!-- Abstract -->
             <div class="paper-abstract">
-              <p><span class="abstract-label">Abstract.</span> 이 문서는 영화 편집 실무에서 반복적으로 겪는 구조적 문제를 수학적으로 프레이밍하려는 시도이다. 핵심 주장은 다음과 같다. 영화 편집은 촬영된 시공간적 사건들을 잘라내고 다시 잇는 작업이며, 결국 고차원 상태 공간에서의 경로 찾기이다. NLE (non-linear editing)의 인터페이스는 이 상태 공간을 시간, 공간, 리듬 등의 서로 다른 축에 따라 잘라서 보여주는 저차원 뷰들의 집합이다. 타임라인, 파형, 프로그램 모니터와 같은 뷰들은 고차원 편집 상태를 UI라는 저차원 표면 위에서 판별 가능한 몇 개의 축으로만 투영한다. 멀티캠 같이 추상화된 컨테이너 구조가 투영들 사이의 일관성을 깨뜨릴 때, 이 상태 공간의 위상(연결성·도달 가능성)과 경로의 비용 구조(어떤 경로를 &ldquo;최적&rdquo;이라 부를 수 있는지에 대한 기준)는 함께 뒤틀린다. 이 글의 질문은 다음과 같다. <span class="paper-question">주어진 소스(configuration space)와 제약(장르, 러닝타임, 감독 의도) 하에서, 편집 도구의 인터페이스는 어떤 조건에서 고차원 편집 상태와 저차원 뷰 사이의 대응 관계를 유지할 수 있으며, 그 안에서 편집자의 직관이 탐색하고 있는 &ldquo;최적 경로&rdquo;를 수학적 언어로 어떻게 기술할 수 있는가?</span></p>
+              <p><span class="abstract-label">Abstract.</span> 이 문서는 영화 편집 실무에서 반복적으로 겪는 구조적 문제를 수학적으로 프레이밍하려는 시도이다. 핵심 주장은 다음과 같다. 영화 편집은 촬영된 시공간적 사건들을 잘라내고 다시 잇는 작업이며, <mark>결국 고차원 상태 공간에서의 경로 찾기이다.</mark> NLE (non-linear editing)의 인터페이스는 이 상태 공간을 시간, 공간, 리듬 등의 서로 다른 축에 따라 잘라서 보여주는 저차원 뷰들의 집합이다. 타임라인, 파형, 프로그램 모니터와 같은 뷰들은 고차원 편집 상태를 UI라는 저차원 표면 위에서 판별 가능한 몇 개의 축으로만 투영한다. 멀티캠 같이 추상화된 컨테이너 구조가 투영들 사이의 일관성을 깨뜨릴 때, 이 상태 공간의 위상(연결성·도달 가능성)과 경로의 비용 구조(어떤 경로를 &ldquo;최적&rdquo;이라 부를 수 있는지에 대한 기준)는 함께 뒤틀린다. 이 글의 질문은 다음과 같다. <span class="paper-question">주어진 소스(configuration space)와 제약(장르, 러닝타임, 감독 의도) 하에서, 편집 도구의 인터페이스는 어떤 조건에서 고차원 편집 상태와 저차원 뷰 사이의 대응 관계를 유지할 수 있으며, 그 안에서 편집자의 직관이 탐색하고 있는 &ldquo;최적 경로&rdquo;를 수학적 언어로 어떻게 기술할 수 있는가?</span></p>
               <p class="paper-keywords"><span class="kw-label">Keywords.</span> state space, projection, configuration space, Non-Linear Editing, cognitive cost</p>
             </div>
 
@@ -312,7 +302,7 @@
               <!-- 1.2 -->
               <h3>1.2. 월터 머치의 여섯 가지 규칙</h3>
 
-              <p class="no-indent">월터 머치는 지옥의 묵시록, 대부 시리즈, 잉글리쉬 페이션트 등을 편집한 거장이다. 머치는 필름 시대의 Moviola와 Steenbeck에서 시작하여 2000년대 콜드 마운틴을 애플의 비선형 편집 툴인 Final Cut Pro로 편집한 최초의 메이저 스튜디오 작업자이기도 하다. 물리적 필름 스트립을 면도칼로 자르던 시대에서 비선형 편집(NLE)으로의 전환을 직접 경험한 인물이 In the Blink of an Eye(1995, 2nd ed. 2001)에서 제시한 &ldquo;여섯 가지 규칙&rdquo;은 매체의 변화에도 불구하고 유지되는 <strong>불변량(invariant)</strong>을 제안한 것으로 볼 수 있다.</p>
+              <p class="no-indent">월터 머치는 지옥의 묵시록, 대부 시리즈, 잉글리쉬 페이션트 등을 편집한 거장이다. 머치는 필름 시대의 Moviola와 Steenbeck에서 시작하여 2000년대 콜드 마운틴을 애플의 비선형 편집 툴인 Final Cut Pro로 편집한 최초의 메이저 스튜디오 작업자이기도 하다. 물리적 필름 스트립을 면도칼로 자르던 시대에서 비선형 편집(NLE)으로의 전환을 직접 경험한 인물이 In the Blink of an Eye(1995, 2nd ed. 2001)에서 제시한 &ldquo;여섯 가지 규칙&rdquo;<sup class="footnote-ref" id="fnref-murch"><a href="#fn-murch" role="doc-noteref" aria-label="주석 1">1</a></sup>은 매체의 변화에도 불구하고 유지되는 <strong>불변량(invariant)</strong>을 제안한 것으로 볼 수 있다.</p>
 
               <!-- Figure 2 -->
               <figure class="paper-figure">
@@ -341,7 +331,7 @@
               <!-- 1.3 -->
               <h3>1.3. 고차원 최적화로서의 편집</h3>
 
-              <p class="no-indent">왜 &ldquo;고차원&rdquo;인가? 머치의 목록 자체가 답이다. 편집자가 컷 하나를 결정할 때, 최소 여섯 개의 축을 <strong>동시에</strong> 고려해야 한다. 감정(<span class="m">E</span>), 이야기(<span class="m">N</span>), 리듬(<span class="m">R</span>), 시선(<span class="m">G</span>), 평면성(<span class="m">P</span>), 공간(<span class="m">S</span>). 그리고 이 각각의 축은 다시 세부 차원들로 분해된다. 리듬 축 하나만 해도 컷의 길이, 액션 속도, 대사의 박자, 음악과의 동기화 등이 얽혀 있다.</p>
+              <p class="no-indent">왜 &ldquo;고차원&rdquo;인가? 머치의 목록 자체가 답이다. 편집자가 컷 하나를 결정할 때, 최소 여섯 개의 축을 <strong>동시에</strong> 고려해야 한다. 감정(\(E\)), 이야기(\(N\)), 리듬(\(R\)), 시선(\(G\)), 평면성(\(P\)), 공간(\(S\)). 그리고 이 각각의 축은 다시 세부 차원들로 분해된다. 리듬 축 하나만 해도 컷의 길이, 액션 속도, 대사의 박자, 음악과의 동기화 등이 얽혀 있다.</p>
 
               <p>필름 시대의 편집자는 이 고차원 공간을 <strong>물리적으로</strong> 탐색했다. 필름 스트립은 만질 수 있었고, 스플라이서로 자른 조각들은 빈(bin)에 걸려 있었다. 상태 공간의 현재 위치&mdash;어떤 테이크가 어디에 붙어 있는지&mdash;는 편집실 바닥에 펼쳐진 필름 더미 그 자체였다. 물리적 매체가 상태의 <strong>완전한 관측</strong>을 보장했다.</p>
 
@@ -383,7 +373,7 @@
                 <figcaption><span class="fig-label">Figure 3.</span> 편집 상태 공간의 개념적 도해</figcaption>
               </figure>
 
-              <p>NLE의 인터페이스는 이 고차원 공간을 여러 개의 저차원 뷰로 분할한다. 타임라인 패널은 시간 축(<span class="m">T</span>)을 전면에 내세우고, 오디오 파형 디스플레이는 시간에 따라 변하는 리듬 축(<span class="m">R</span>)을 시각화하며, 프로그램 모니터는 고정된 시간에서의 공간적 단면을 공간 축(<span class="m">S</span>)으로 렌더링한다. 각각의 뷰는 전체 편집 상태 공간 <span class="m">S</span>에서 저차원 뷰 공간 <span class="m">V<sub>i</sub></span>로의 <strong>투영</strong> <span class="m">&pi;<sub>i</sub></span> : <span class="m">S</span> &rarr; <span class="m">V<sub>i</sub></span>로 볼 수 있으며, 이때 dim <span class="m">V<sub>i</sub></span> &ll; dim <span class="m">S</span>이다.</p>
+              <p>NLE의 인터페이스는 이 고차원 공간을 여러 개의 저차원 뷰로 분할한다. 타임라인 패널은 시간 축(\(T\))을 전면에 내세우고, 오디오 파형 디스플레이는 시간에 따라 변하는 리듬 축(\(R\))을 시각화하며, 프로그램 모니터는 고정된 시간에서의 공간적 단면을 공간 축(\(S\))으로 렌더링한다. 각각의 뷰는 전체 편집 상태 공간 \(S\)에서 저차원 뷰 공간 \(V_i\)로의 <strong>투영</strong> \(\pi_i : S \to V_i\)로 볼 수 있으며, 이때 \(\dim V_i \ll \dim S\)이다.</p>
 
               <!-- Figure 4 -->
               <figure class="paper-figure">
@@ -427,9 +417,17 @@
                 <p class="no-indent"><span class="def-label">Definition</span> (투영 간 일관성). 이상적인 UI에서는 각 투영이 보존하는 정보가 명확하고, 투영들 사이에 일관된 관계가 유지된다.</p>
               </div>
 
-              <p class="no-indent">NLE의 추상화(container, nesting)는 이 일관성을 깨뜨릴 수 있다. 멀티캠의 경우, <span class="m">S</span> 안에 원본 테이크 정보는 존재한다. 그러나 제공된 투영들 <span class="m">&pi;<sub>1</sub></span>, <span class="m">&pi;<sub>2</sub></span>, &hellip; 중 어느 것도 그 정보를 직접 드러내지 않는다. 즉, UI는 <span class="m">S</span> 전체가 아니라 <span class="m">S</span>의 부분 함수로만 작동하고 있다.</p>
+              <p class="no-indent">NLE의 추상화(container, nesting)는 이 일관성을 깨뜨릴 수 있다. 멀티캠의 경우, \(S\) 안에 원본 테이크 정보는 존재한다. 그러나 제공된 투영들 \(\pi_1, \pi_2, \ldots\) 중 어느 것도 그 정보를 직접 드러내지 않는다. 즉, UI는 \(S\) 전체가 아니라 \(S\)의 부분 함수로만 작동하고 있다.</p>
 
             </div>
+
+            <section class="footnotes" role="doc-endnotes" aria-label="주석">
+              <ol>
+                <li id="fn-murch">
+                  <p>이 글에서 사용한 &ldquo;여섯 가지 규칙&rdquo;의 명칭과 가중치는 본문에 언급한 Walter Murch의 <cite>In the Blink of an Eye</cite> 2판을 기준으로 정리했다. <a href="#fnref-murch" class="footnote-backref" role="doc-backlink" aria-label="본문으로 돌아가기">&#x21A9;&#xFE0E;</a></p>
+                </li>
+              </ol>
+            </section>
           </article>
 
         </div>
