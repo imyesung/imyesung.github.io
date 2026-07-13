@@ -13,21 +13,22 @@
   else if (/playground/.test(path)) section = 'playground';
 
   var items = [
-    ['about', 'index.html', 'About'],
     ['filmography', 'filmography.html', 'Filmography'],
     ['blackboard', 'blackboard.html', 'Blackboard'],
     ['playground', 'playground.html', 'Playground']
   ];
 
   var nav = items.map(function (it) {
-    var cur = it[0] === section ? ' class="nav-current"' : '';
+    var cur = it[0] === section ? ' class="nav-current" aria-current="page"' : '';
     return '<a href="' + prefix + it[1] + '"' + cur + '>' + it[2] + '</a>';
   }).join('');
+
+  var logoCurrent = section === 'about' ? ' aria-current="page"' : '';
 
   var header =
     '<div class="site-header-inner">' +
       '<div class="logo-block">' +
-        '<a href="' + prefix + 'index.html" class="logo-text">LIM YESUNG</a>' +
+        '<a href="' + prefix + 'index.html" class="logo-text"' + logoCurrent + '>LIM YESUNG</a>' +
       '</div>' +
       '<nav class="site-nav">' + nav + '</nav>' +
     '</div>';
