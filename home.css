@@ -1,0 +1,29 @@
+/* Home: black ink, the original serif, and ordinary text links. */
+.page-about {
+  --ink: #000000;
+  --ink-strong: #000000;
+  --ink-soft: #000000;
+  --ink-muted: #000000;
+  --ink-faint: #000000;
+  --rule: #000000;
+  --rule-soft: #000000;
+  --surface: #ffffff;
+  --link: #000000;
+  --link-hover: #000000;
+  --copy-leading: 1.65;
+}
+
+.page-about a {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
+.page-about a:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 4px;
+}
+
+.page-about .about-contact .about-text {
+  font-family: inherit;
+  font-size: 1rem;
+}
