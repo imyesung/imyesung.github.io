@@ -10,7 +10,8 @@
   --content-max: 50rem;
   --content-gutter: 1.875rem;
   --content-gutter-compact: 0.9375rem;
-  /* Reading measure: about 75 characters per line inside the 50rem grid. */
+  /* Reading measure: about 75 characters per line inside the 50rem grid.
+     The About copy and the right edge of the nav both end here. */
   --prose-measure: 30rem;
   --copy-leading: 1.5;
   --paragraph-gap: 0.9375rem;
@@ -80,6 +81,9 @@
 
 html {
   scroll-behavior: smooth;
+  /* Always show the scrollbar track so short and long pages share one
+     x-axis and full-width rules end at the track. */
+  overflow-y: scroll;
 }
 
 body {
@@ -170,6 +174,9 @@ body {
   display: flex;
   gap: 1rem;
   font-size: 1rem;
+  /* End where the reading measure ends, not at the far edge of the grid,
+     so the nav sits above the text on every page. */
+  margin-right: max(0px, calc(100% - var(--prose-measure)));
 }
 
 .site-nav a {
@@ -192,6 +199,17 @@ body {
 .section {
   padding-top: 3rem;
   padding-bottom: 3rem;
+}
+
+/* ── Page titles ──
+   Filmography, Blackboard, Playground and tool pages share one title.
+   Stated here because browsers disagree on the default size of an h1
+   inside <section>. The home page keeps its own quieter heading. */
+
+:where(.section-inner > h1) {
+  margin: 1.34rem 0;
+  font-size: 2rem;
+  font-weight: 700;
 }
 
 /* ── About ── */
@@ -253,13 +271,6 @@ body {
 .section-filmography {
   padding-top: 3rem;
   padding-bottom: 3rem;
-}
-
-.section-filmography h1 {
-  margin: 0 0 2rem 0;
-  font-size: 1.125rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
 }
 
 .projects-grid-text {
