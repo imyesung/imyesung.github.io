@@ -687,8 +687,10 @@ html body mjx-container[jax="CHTML"] > mjx-assistive-mml {
     padding-bottom: 1.5rem;
   }
 
-  /* full-bleed video: cancel the compact section padding */
+  /* full-bleed video: cancel the compact section padding. width must be
+     auto here, or the negative margins only shift the box to the left. */
   .video-embed {
+    width: auto;
     margin-left: calc(-1 * var(--content-gutter-compact));
     margin-right: calc(-1 * var(--content-gutter-compact));
     border-radius: 0;
