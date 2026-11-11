@@ -10,6 +10,8 @@
   --content-max: 50rem;
   --content-gutter: 1.875rem;
   --content-gutter-compact: 0.9375rem;
+  /* Reading measure: about 75 characters per line inside the 50rem grid. */
+  --prose-measure: 30rem;
   --copy-leading: 1.5;
   --paragraph-gap: 0.9375rem;
 

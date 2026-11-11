@@ -10,7 +10,38 @@
   --surface: #ffffff;
   --link: #000000;
   --link-hover: #000000;
+}
+
+/* Looser leading for the copy only, so the shared header and footer keep
+   the same height on every page. */
+.page-about .site-main {
   --copy-leading: 1.65;
+  line-height: var(--copy-leading);
+}
+
+/* Keep the 50rem grid shared with header and footer; narrow only the copy. */
+.page-about .section-inner > * {
+  max-width: var(--prose-measure);
+}
+
+.page-about .section-inner p {
+  text-wrap: pretty;
+}
+
+/* A tie, as in TeX's ~: the two words stay on one line, so a sentence
+   never leaves its first word (or a lone "a") stranded at a line end.
+   A span rather than U+00A0, which Latin Modern draws 1.5 times wider
+   than a normal space. */
+.tie {
+  white-space: nowrap;
+}
+
+/* On wide screens a work title stays on one line. On phones the hole
+   that leaves at the line end is worse than a split title. */
+@media (min-width: 601px) {
+  .page-about em {
+    white-space: nowrap;
+  }
 }
 
 .page-about a {
